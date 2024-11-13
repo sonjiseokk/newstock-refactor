@@ -2,6 +2,7 @@ package com.ssafy.favorite.domain.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.favorite.domain.entity.FavoriteIndustryNews;
+import com.ssafy.favorite.domain.repository.FavoriteIndustryNewsQueryRepository;
 import com.ssafy.favorite.domain.repository.FavoriteIndustryNewsRepository;
 import com.ssafy.favorite.domain.service.client.response.IndustryNewsDto;
 import com.ssafy.favorite.global.exception.AlreadyFavoriteNews;
@@ -20,7 +21,7 @@ import java.util.List;
 public class FavoriteIndustryNewsService {
     private final FavoriteIndustryNewsRepository favoriteIndustryNewsRepository;
     private final IndustryNewsFeignService industryNewsFeignService;
-    private final ObjectMapper objectMapper;
+    private final FavoriteIndustryNewsQueryRepository queryRepository;
 
     @Transactional
     public void favoriteNews(Long memberId, String industryNewsId) {
@@ -48,7 +49,7 @@ public class FavoriteIndustryNewsService {
     public List<IndustryNewsDto> getFavoriteIndustryNews(Long memberId, int page, int size) {
         PageRequest pageRequest = PageRequest.of(Math.max(page - 1, 0), size);
 
-        Page<FavoriteIndustryNews> result = favoriteIndustryNewsRepository.findAllFavoriteNewsByMemberId(memberId, pageRequest);
+        Page<FavoriteIndustryNews> result = queryRepository.findAllFavoriteNewsByMemberId(memberId, pageRequest);
         List<FavoriteIndustryNews> content = result.getContent();
 
         List<String> newsIds = content.stream()

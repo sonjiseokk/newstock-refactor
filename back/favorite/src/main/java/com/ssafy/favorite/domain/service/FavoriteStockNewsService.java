@@ -2,6 +2,8 @@ package com.ssafy.favorite.domain.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.favorite.domain.entity.FavoriteStockNews;
+import com.ssafy.favorite.domain.repository.FavoriteIndustryNewsQueryRepository;
+import com.ssafy.favorite.domain.repository.FavoriteStockNewsQueryRepository;
 import com.ssafy.favorite.domain.repository.FavoriteStockNewsRepository;
 import com.ssafy.favorite.domain.service.client.response.StockNewsDto;
 import com.ssafy.favorite.global.exception.AlreadyFavoriteNews;
@@ -22,8 +24,7 @@ import java.util.List;
 public class FavoriteStockNewsService {
     private final FavoriteStockNewsRepository favoriteStockNewsRepository;
     private final StockNewsFeignService stockNewsFeignService;
-    private final ObjectMapper objectMapper;
-
+    private final FavoriteStockNewsQueryRepository queryRepository;
     @Transactional
     public void favoriteNews(Long memberId, String stockNewsId) {
         // 이미 관심 목록에 등록한 경우
@@ -50,7 +51,7 @@ public class FavoriteStockNewsService {
     public List<StockNewsDto> getFavoriteStockNews(Long memberId, int page, int size) {
         PageRequest pageRequest = PageRequest.of(Math.max(page - 1, 0), size);
 
-        Page<FavoriteStockNews> result = favoriteStockNewsRepository.findAllFavoriteNewsByMemberId(memberId, pageRequest);
+        Page<FavoriteStockNews> result = queryRepository.findAllFavoriteNewsByMemberId(memberId, pageRequest);
         List<FavoriteStockNews> content = result.getContent();
 
         List<String> newsIds = content.stream()
