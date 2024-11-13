@@ -11,11 +11,4 @@ public interface FavoriteIndustryNewsRepository extends JpaRepository<FavoriteIn
     boolean existsByMemberIdAndIndustryNewsId(Long memberId, String industryNewsId);
 
     void deleteByMemberIdAndIndustryNewsId(Long memberId, String industryNewsId);
-
-    @Query("select fin " +
-            "from FavoriteIndustryNews fin " +
-            "where fin.memberId = :memberId " +
-            "order by fin.createdDate desc ")
-    Page<FavoriteIndustryNews> findAllFavoriteNewsByMemberId(@Param("memberId") Long memberId, Pageable pageable);
-
 }

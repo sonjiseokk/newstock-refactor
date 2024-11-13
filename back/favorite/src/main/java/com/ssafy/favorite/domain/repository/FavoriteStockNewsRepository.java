@@ -11,11 +11,4 @@ public interface FavoriteStockNewsRepository extends JpaRepository<FavoriteStock
     boolean existsByMemberIdAndStockNewsId(Long memberId, String stockNewsId);
 
     void deleteByMemberIdAndStockNewsId(Long memberId, String stockNewsId);
-
-    @Query("select fsn " +
-            "from FavoriteStockNews fsn " +
-            "where fsn.memberId = :memberId " +
-            "order by fsn.createdDate desc ")
-    Page<FavoriteStockNews> findAllFavoriteNewsByMemberId(@Param("memberId") Long memberId, Pageable pageable);
-
 }
