@@ -5,6 +5,7 @@ import com.ssafy.member.domain.controller.response.MemberPointResponse;
 import com.ssafy.member.domain.entity.Member;
 import com.ssafy.member.domain.entity.dto.MemberDetailDto;
 import com.ssafy.member.domain.entity.dto.MemberRankDto;
+import com.ssafy.member.domain.repository.MemberQueryRepository;
 import com.ssafy.member.domain.repository.MemberRepository;
 import com.ssafy.member.global.exception.MemberNotFoundException;
 import com.ssafy.member.global.exception.NotEnoughPointsException;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final MemberQueryRepository memberQueryRepository;
     private final SimpMessageSendingOperations simpMessageSendingOperations;
 
     /*
@@ -143,7 +145,7 @@ public class MemberService {
      * @return List<MemberRankDto>
      */
     public List<MemberRankDto> getHoldingRank(){
-        List<Member> holdingRankList = memberRepository.getHoldingRank();
+        List<Member> holdingRankList = memberQueryRepository.getHoldingRank();
 
         return holdingRankList.stream()
                 .map(transactionRank -> {
@@ -158,7 +160,7 @@ public class MemberService {
      * @return List<MemberRankDto>
      */
     public List<MemberRankDto> getTransactionRank(){
-        List<Member> transactionRankList = memberRepository.getTransactionRank();
+        List<Member> transactionRankList = memberQueryRepository.getTransactionRank();
 
         return transactionRankList.stream()
                 .map(transactionRank -> {
